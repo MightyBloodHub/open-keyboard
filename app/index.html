@@ -459,7 +459,7 @@ async function startCountdown(){
     st.stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
   }catch(e){
     try{st.stream=await navigator.mediaDevices.getUserMedia({audio:true});}catch(e2){
-      stage.innerHTML='<div style="color:var(--red)">Microphone access was blocked.</div><div class="hint">Allow the microphone for this page (address-bar icon) and in System Settings → Privacy & Security → Microphone, then try again.<br>'+esc(e2&&e2.message||e2||'')+'</div>';
+      stage.innerHTML='<div style="color:var(--red)">Microphone access was blocked.</div><div class="hint">Allow the microphone for this page (address-bar icon) and in System Settings → Privacy &#38; Security → Microphone, then try again.<br>'+esc(e2&&e2.message||e2||'')+'</div>';
       setActions(btn('Close','',closeRecorder),btn('Try again','primary',startCountdown)); return;
     }
   }
@@ -517,7 +517,7 @@ async function finishRecording(){
   const levelTxt='Mic peak level: <b>'+dbTxt(peak)+'</b> · '+(rec.data.length/rec.sr).toFixed(1)+'s captured via '+method;
   const prepared=peak>=1e-4?prepare(rec):null;
   if(!prepared){
-    stage.innerHTML='<div style="color:var(--warn);font-weight:700">No sound detected 🤔</div><div class="hint">'+levelTxt+'<br><br>The microphone delivered silence. Check System Settings → Privacy & Security → Microphone (your browser must be ON), System Settings → Sound → Input (right device, input level up), and that the mic isn\'t muted.</div>';
+    stage.innerHTML='<div style="color:var(--warn);font-weight:700">No sound detected 🤔</div><div class="hint">'+levelTxt+'<br><br>The microphone delivered silence. Check System Settings → Privacy &#38; Security → Microphone (your browser must be ON), System Settings → Sound → Input (right device, input level up), and that the mic isn\'t muted.</div>';
     setActions(btn('Cancel','',closeRecorder),btn('↻ Record again','primary',()=>openRecorder(st.key).then(startCountdown)));return;
   }
   st.rec=rec; st.prepared=prepared;
@@ -1070,7 +1070,7 @@ async function loadCustomMelodies(){const c=await dbGet('meta','customMelodies')
 /* ---------------- UI ---------------- */
 const listEl=document.getElementById('list'), boardEl=document.getElementById('board');
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>t.style.display='none',2600);}
-const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&','<':'<','>':'>','"':'"',"'":'&#39;'}[c]));
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&#38;','<':'&#60;','>':'&#62;','"':'&#34;',"'":'&#39;'}[c]));
 
 /* ---- key binding (event.code based, so it follows the physical key) ---- */
 const CODE_LABELS={Space:'Space',ArrowUp:'↑',ArrowDown:'↓',ArrowLeft:'←',ArrowRight:'→',Enter:'⏎',Semicolon:';',Quote:"'",Comma:',',Period:'.',Slash:'/',Backslash:'\\',BracketLeft:'[',BracketRight:']',Minus:'-',Equal:'=',Backquote:'`',IntlBackslash:'§',NumpadEnter:'Num ⏎',NumpadAdd:'Num +',NumpadSubtract:'Num −',NumpadMultiply:'Num ×',NumpadDivide:'Num ÷',NumpadDecimal:'Num .',Home:'Home',End:'End',PageUp:'PgUp',PageDown:'PgDn',Insert:'Ins'};
